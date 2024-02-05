@@ -7,20 +7,7 @@ import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args) {
-        String dbName = "";
-        if ("-databaseFileName".equals(args[0]) && "carsharing".equals(args[1])) {
-            dbName = args[1];
-        } else {
-            dbName = "someDatabase";
-        }
-
-        String url = "jdbc:h2:./src/carsharing/db/" + dbName;
-        try {
-            Class.forName ("org.h2.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try (Connection con = DriverManager.getConnection(url);
+        try (Connection con = DBInitialization.init(args);
              Statement stat = con.createStatement() ){
             con.setAutoCommit(true);
             String createCompanyTable = "CREATE TABLE IF NOT EXISTS COMPANY (" +
